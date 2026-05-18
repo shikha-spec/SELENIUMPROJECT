@@ -1,16 +1,20 @@
-const { Builder, By } = require("selenium-webdriver");
+const { Builder } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
-async function testGoogle() {
-    let driver = await new Builder().forBrowser("chrome").build();
+(async function example() {
+    let options = new chrome.Options();
 
-    try {
-        await driver.get("https://www.google.com");
-        console.log("Website opened successfully");
-    } catch (error) {
-        console.log(error);
-    } finally {
-        await driver.quit();
-    }
-}
+    options.addArguments("--headless");
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
 
-testGoogle();
+    let driver = await new Builder()
+        .forBrowser("chrome")
+        .setChromeOptions(options)
+        .build();
+
+    await driver.get("https://www.google.com");
+    console.log("Test Passed");
+
+    await driver.quit();
+})();
